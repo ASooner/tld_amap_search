@@ -16,8 +16,8 @@ A AmapSearch Extend
   s.source_files = 'Classes/**/*'
   s.public_header_files = 'Classes/**/*.h'
   s.dependency 'Flutter'
-  s.dependency 'AMapSearch'
-  s.platform = :ios, '9.0'
+  s.dependency 'AMapSearch', '9.5'
+  s.platform = :ios, '13.0'
   s.static_framework = true
 
   # Flutter.framework does not contain a i386 slice.
