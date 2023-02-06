@@ -20,8 +20,7 @@ class TldAmapSearch {
   }
 
   /// 初始化key
-  static Future<bool> initKey(
-      {required String androidKey, required String iosKey}) async {
+  static Future<bool> initKey({required String androidKey, required String iosKey}) async {
     bool result = await _channel.invokeMethod('initKey', {
       "apiKey": Platform.isIOS ? iosKey : androidKey,
     });
@@ -29,15 +28,13 @@ class TldAmapSearch {
   }
 
   /// 隐私协议
-  static Future<void> updatePrivacyShow(
-      {bool? hasShow, bool? hasContains}) async {
-    await _channel.invokeMethod('updatePrivacyShow',
-        {"hasShow": hasShow ?? false, "hasContains": hasContains ?? false});
+  static Future<void> updatePrivacyShow({bool? hasShow, bool? hasContains}) async {
+    await _channel.invokeMethod(
+        'updatePrivacyShow', {"hasShow": hasShow ?? false, "hasContains": hasContains ?? false});
   }
 
   static Future<void> updatePrivacyAgree({bool? hasAgree}) async {
-    await _channel
-        .invokeMethod('updatePrivacyAgree', {"hasAgree": hasAgree ?? false});
+    await _channel.invokeMethod('updatePrivacyAgree', {"hasAgree": hasAgree ?? false});
   }
 
   /// 周边搜索
@@ -69,11 +66,7 @@ class TldAmapSearch {
 
   /// 关键字搜索
   static Future<void> searchKeyword(
-      {required String? keyWord,
-      String? city,
-      int? page = 1,
-      int? limit = 20,
-      PoiResultBack? back}) async {
+      {required String? keyWord, String? city, int? page = 1, int? limit = 20, PoiResultBack? back}) async {
     var result = await _channel.invokeMethod('keywordsSearch', {
       "keyWord": keyWord,
       "city": city,
@@ -95,8 +88,7 @@ class TldAmapSearch {
       bool isLive = true,
       LiveResultBack? liveBack,
       ForeCastResultBack? foreBack}) async {
-    var result = await _channel
-        .invokeMethod('weatherSearch', {'city': city, 'isLive': isLive});
+    var result = await _channel.invokeMethod('weatherSearch', {'city': city, 'isLive': isLive});
     if (result.isNotEmpty) {
       Map? map = json.decode(result);
       if (isLive) {
@@ -131,11 +123,9 @@ class TldAmapSearch {
 
   ///逆地理编码
   static Future<void> reGeocoding(
-      {required double longitude,
-      required double latitude,
-      ReGeocodingResultBack? back}) async {
-    final String? jsonStr = await _channel.invokeMethod(
-        'reGeocoding', {"longitude": longitude, "latitude": latitude});
+      {required double longitude, required double latitude, ReGeocodingResultBack? back}) async {
+    final String? jsonStr =
+        await _channel.invokeMethod('reGeocoding', {"longitude": longitude, "latitude": latitude});
     if (jsonStr != null) {
       Map? map = json.decode(jsonStr);
       if (map != null && back != null) {
@@ -159,6 +149,28 @@ class TldAmapSearch {
       "endLat": endLat,
       "endLng": endLng,
       "drivingMode": drivingMode,
+    });
+    if (jsonStr != null) {
+      Map? map = json.decode(jsonStr);
+      if (map != null && back != null) {
+        back(map['code'] as int, RouteResult.fromJson(map["data"]));
+      }
+    }
+  }
+
+  /// 骑行线路规划
+  static Future<void> rideRouteSearch({
+    required double startLat,
+    required double startLng,
+    required double endLat,
+    required double endLng,
+    RouteResultBack? back,
+  }) async {
+    final String? jsonStr = await _channel.invokeMethod('rideRouteSearch', {
+      "startLat": startLat,
+      "startLng": startLng,
+      "endLat": endLat,
+      "endLng": endLng,
     });
     if (jsonStr != null) {
       Map? map = json.decode(jsonStr);

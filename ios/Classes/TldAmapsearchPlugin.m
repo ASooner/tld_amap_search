@@ -95,7 +95,24 @@
             nav.destination=destination;
             //发送请求
             [self.search AMapWalkingRouteSearch:nav];
-        } else{
+        } else if ( ([@"rideRouteSearch" isEqualToString:call.method])) {
+            NSString* wayPointsJson = args[@"wayPointsJson"];
+            double lat1 = [args[@"startLat"] doubleValue];
+            double lng1 = [args[@"startLng"] doubleValue];
+            double lat2 = [args[@"endLat"] doubleValue];
+            double lng2 = [args[@"endLng"] doubleValue];
+            //起点对象
+            AMapGeoPoint* origin =[AMapGeoPoint locationWithLatitude:lat1 longitude:lng1];
+            //终点对象
+            AMapGeoPoint* destination =[AMapGeoPoint locationWithLatitude:lat2 longitude:lng2];
+
+            //构造高德地图检索请求
+            AMapRidingRouteSearchRequest *nav = [[AMapRidingRouteSearchRequest alloc]  init];
+            nav.origin=origin;
+            nav.destination=destination;
+            //发送请求
+            [self.search AMapRidingRouteSearch:nav];
+        }else {
             result(FlutterMethodNotImplemented);
         }
     }
