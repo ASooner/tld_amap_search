@@ -152,6 +152,20 @@ public class TldAmapsearchPlugin implements FlutterPlugin, MethodCallHandler, Ac
         });
         break;
       }
+      case "rideRouteSearch": {
+        //线路规划 --骑行
+        double startLat = call.argument("startLat");
+        double startLng = call.argument("startLng");
+        double endLat = call.argument("endLat");
+        double endLng = call.argument("endLng");
+        getAmapSearchClient().rideRouteSearch(new LatLonPoint(startLat, startLng), new LatLonPoint(endLat, endLng), new SearchBack() {
+          @Override
+          public void back(final int code,final Map<String,Object> map) {
+            result.success(JsonUtil.toJson(toResult(code,map)));
+          }
+        });
+        break;
+      }
       default:
         result.notImplemented();
         break;

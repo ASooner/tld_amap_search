@@ -57,7 +57,7 @@ class Paths {
     strategy = json['strategy'];
     tollDistance = json['tollDistance'];
     tolls = json['tolls'];
-    polyline = json['polyline'];
+   //polyline = json['polyline'];
   }
 
   Map<String, dynamic> toJson() {

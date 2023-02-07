@@ -2,12 +2,16 @@ package com.tld.extend.tld_amapsearch;
 
 import android.content.Context;
 import android.util.Log;
+import android.util.Printer;
 
 import com.amap.api.services.core.AMapException;
 import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.core.PoiItem;
 import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
+import com.amap.api.services.route.RidePath;
+import com.amap.api.services.route.RideRouteResult;
+import com.amap.api.services.route.RideStep;
 import com.amap.api.services.route.WalkPath;
 import com.amap.api.services.route.WalkRouteResult;
 import com.amap.api.services.route.WalkStep;
@@ -288,6 +292,46 @@ public class AmapSearchClient {
                 }
             });
             getRouteSearch().calculateWalkRouteAsyn(query);
+        } catch (AMapException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 骑行
+     */
+    public void rideRouteSearch(LatLonPoint start,LatLonPoint end, final SearchBack searchBack) {
+        try {
+            final RouteSearch.FromAndTo fromAndTo = new RouteSearch.FromAndTo(
+                    start, end);
+            RouteSearch.RideRouteQuery query = new RouteSearch.RideRouteQuery(fromAndTo, 0);
+            getRouteSearch().setRouteSearchListener(new DriveRouteSearchListener() {
+                @Override
+                public void onDriveRouteSearched(DriveRouteResult driveRouteResult, int i) {
+
+                }
+
+                @Override
+                public void onRideRouteSearched(RideRouteResult result, int code) {
+                    Map<String, Object> map = new HashMap<>();
+                    List<RidePath> drivePaths = result.getPaths();
+                    List<Map<String, Object>> paths = new ArrayList<>();
+                    for (RidePath ridePath : drivePaths) {
+                        Map<String, Object> pathMap = JsonUtil.toMap(ridePath);
+                        List<Map<String, Object>> steps = new ArrayList<>();
+                        for (RideStep step : ridePath.getSteps()){
+                            Map<String, Object> stepMap = JsonUtil.toMap(step);
+                            stepMap.put("polyline",LatlngUtil.objListJoin(step.getPolyline()));
+                            steps.add(stepMap);
+                        }
+                        pathMap.put("steps",steps);
+                        paths.add(pathMap);
+                    }
+                    map.put("paths", paths);
+                    searchBack.back(code, map);
+                }
+            });
+            getRouteSearch().calculateRideRouteAsyn(query);
         } catch (AMapException e) {
             e.printStackTrace();
         }
