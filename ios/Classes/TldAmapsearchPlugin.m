@@ -79,7 +79,6 @@
             //发送请求
             [self.search AMapDrivingV2RouteSearch:navi];
         } else if ( ([@"truckRouteSearch" isEqualToString:call.method])) {
-            NSString* wayPointsJson = args[@"wayPointsJson"];
             double lat1 = [args[@"startLat"] doubleValue];
             double lng1 = [args[@"startLng"] doubleValue];
             double lat2 = [args[@"endLat"] doubleValue];
@@ -93,10 +92,10 @@
             AMapWalkingRouteSearchRequest *nav = [[AMapWalkingRouteSearchRequest alloc]  init];
             nav.origin=origin;
             nav.destination=destination;
+            nav.showFieldsType = AMapWalkingRouteShowFieldTypeAll;
             //发送请求
             [self.search AMapWalkingRouteSearch:nav];
         } else if ( ([@"rideRouteSearch" isEqualToString:call.method])) {
-            NSString* wayPointsJson = args[@"wayPointsJson"];
             double lat1 = [args[@"startLat"] doubleValue];
             double lng1 = [args[@"startLng"] doubleValue];
             double lat2 = [args[@"endLat"] doubleValue];
@@ -110,6 +109,7 @@
             AMapRidingRouteSearchRequest *nav = [[AMapRidingRouteSearchRequest alloc]  init];
             nav.origin=origin;
             nav.destination=destination;
+            nav.showFieldsType = AMapRidingRouteShowFieldsTypeAll;
             //发送请求
             [self.search AMapRidingRouteSearch:nav];
         }else {
