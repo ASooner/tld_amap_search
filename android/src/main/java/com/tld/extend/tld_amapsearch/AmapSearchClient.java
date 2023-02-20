@@ -49,6 +49,7 @@ public class AmapSearchClient {
             PoiSearch.Query query = new PoiSearch.Query(keyWord,"",city);
             query.setPageSize(limit);// 设置每页最多返回多少条poiitem
             query.setPageNum(page);//设置查询页码
+            query.setExtensions(PoiSearch.EXTENSIONS_ALL);
             PoiSearch poiSearch = new PoiSearch(context,query);
             poiSearch.setBound(new PoiSearch.SearchBound(new LatLonPoint(latitude,
                     longitude), radius));
