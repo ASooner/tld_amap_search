@@ -37,7 +37,7 @@ android {
 dependencies {
 
     //demo中引入高德search
-    implementation 'com.amap.api:search:8.1.0'
+    compileOnly 'com.amap.api:search:8.1.0'
     //json
     implementation 'com.alibaba:fastjson:1.2.61'
 }
